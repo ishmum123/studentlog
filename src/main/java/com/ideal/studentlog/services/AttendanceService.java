@@ -19,9 +19,9 @@ public class AttendanceService {
 
     public void create(AttendanceDTO dto) {
         Attendance attendance = new Attendance();
+        attendance.setDate(dto.getDate());
         attendance.setStudentId(dto.getStudentId());
         attendance.setTeacherId(dto.getTeacherId());
-        attendance.setDate(dto.getDate());
         attendance.setIsPresent(dto.getIsPresent());
      
         repository.save(attendance);
@@ -31,18 +31,18 @@ public class AttendanceService {
         Attendance attendance = repository.findById(id).orElseThrow();
 
         return new AttendanceDTO(
+                attendance.getDate(),
                 attendance.getStudentId(),
                 attendance.getTeacherId(),
-                attendance.getDate(),
                 attendance.getIsPresent()
         );
     }
 
     public void update(Integer id, AttendanceDTO dto) {
         Attendance attendance = repository.findById(id).orElseThrow();
+        attendance.setDate(dto.getDate());
         attendance.setStudentId(dto.getStudentId());
         attendance.setTeacherId(dto.getTeacherId());
-        attendance.setDate(dto.getDate());
         attendance.setIsPresent(dto.getIsPresent());
         
         repository.save(attendance);
