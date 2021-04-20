@@ -17,3 +17,7 @@ databaseChangeLog:
   - include:
       file: structure/create_attendances_table.yaml
       relativeToChangelogFile: true
+  - include:    
+      file: structure/create_subject_details_table.yaml
+      relativeToChangelogFile: true
+

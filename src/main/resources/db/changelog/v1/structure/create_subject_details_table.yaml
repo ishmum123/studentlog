@@ -1,10 +1,10 @@
 databaseChangeLog:
   -  changeSet:
-       id: create_attendances_table_845c6
+       id: create_subject_details_table_845c6
        author: shuhin
        changes:
          -  createTable:
-              tableName: attendance
+              tableName: subject_details
               columns:
                 -  column:
                      name: id
@@ -14,7 +14,7 @@ databaseChangeLog:
                        primaryKey: true
                        nullable: false
                 -  column:
-                     name: student_id
+                     name: subject_id
                      type: int
                      constraints:
                        nullable: false
@@ -22,15 +22,10 @@ databaseChangeLog:
                      name: teacher_id
                      type: int
                      constraints:
-                       nullable: false       
-                -  column:
-                     name: date
-                     type: date
-                     constraints:
                        nullable: false
                 -  column:
-                     name: is_present
-                     type: boolean
+                     name: class_details_id
+                     type: int
                      constraints:
-                       nullable: false
-
+                       nullable: false                 
+            
