@@ -22,3 +22,7 @@ databaseChangeLog:
   - include:
       file: data/add_students_data.yaml
       relativeToChangelogFile: true
+
+  - include:
+      file: structure/create_test_table.yaml
+      relativeToChangelogFile: true

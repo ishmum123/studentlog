@@ -1,0 +1,30 @@
+databaseChangeLog:
+  -  changeSet:
+       id: create_test_table_845c6
+       author: ratul
+       changes:
+         -  createTable:
+              tableName: test
+              columns:
+                -  column:
+                     name: id
+                     type: int
+                     autoIncrement: true
+                     constraints:
+                       primaryKey: true
+                       nullable: false
+                -  column:
+                     name: subject
+                     type: varchar(100)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name: examiner
+                     type: varchar(100)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name: test_date
+                     type: date
+                     constraints:
+                       nullable: false
