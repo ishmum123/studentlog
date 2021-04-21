@@ -1,4 +1,5 @@
 databaseChangeLog:
+
   - include:
       file: structure/create_students_table.yaml
       relativeToChangelogFile: true
@@ -7,7 +8,8 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: structure/create_teachers_table.yaml
-      relativeToChangelogFile: true  - include:
+      relativeToChangelogFile: true  
+  - include:
       file: structure/create_admins_table.yaml
       relativeToChangelogFile: true
   - include:
@@ -19,4 +21,6 @@ databaseChangeLog:
   - include:    
       file: structure/create_subject_details_table.yaml
       relativeToChangelogFile: true
-
+  - include:
+      file: data/add_students_data.yaml
+      relativeToChangelogFile: true
