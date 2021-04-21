@@ -8,7 +8,7 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: structure/create_teachers_table.yaml
-      relativeToChangelogFile: true  
+      relativeToChangelogFile: true
   - include:
       file: structure/create_admins_table.yaml
       relativeToChangelogFile: true
