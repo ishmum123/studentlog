@@ -26,3 +26,7 @@ databaseChangeLog:
   - include:
       file: structure/create_test_table.yaml
       relativeToChangelogFile: true
+
+  - include:
+      file: structure/create_test_result_table.yaml
+      relativeToChangelogFile: true

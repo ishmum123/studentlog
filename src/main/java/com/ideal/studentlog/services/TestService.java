@@ -50,12 +50,8 @@ public class TestService {
         repository.deleteById(id);
     }
 
-    public TestDTO getBySubject(String subject) {
+    public List<Test> getBySubject(String subject) {
         List<Test> test = repository.findTestBySubject(subject);
-        return new TestDTO(
-                test.get(0).getSubject(),
-                test.get(0).getExaminer(),
-                test.get(0).getTest_date()
-        );
+        return test;
     }
 }

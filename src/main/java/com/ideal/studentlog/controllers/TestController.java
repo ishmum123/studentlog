@@ -30,7 +30,7 @@ public class TestController {
     }
 
     @GetMapping(path = "/subject/{subject}")
-    public TestDTO getBySubject(@PathVariable("subject") String subject) {
+    public List<Test> getBySubject(@PathVariable("subject") String subject) {
         return service.getBySubject(subject);
     }
 
