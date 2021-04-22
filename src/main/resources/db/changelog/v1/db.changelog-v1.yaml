@@ -26,3 +26,7 @@ databaseChangeLog:
   - include:
       file: data/add_admins_data.yaml
       relativeToChangelogFile: true
+
+  - include:
+      file: data/add_subjects_data.yaml
+      relativeToChangelogFile: true

@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_subjects_data_1
+      author: lubna
+      changes:
+        - loadData:
+            file: csv/subjects.csv
+            relativeToChangelogFile: true
+            tableName: subject
