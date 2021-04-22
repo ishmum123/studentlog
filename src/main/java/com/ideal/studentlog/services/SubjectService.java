@@ -3,7 +3,9 @@ package com.ideal.studentlog.services;
 import com.ideal.studentlog.database.models.Subject;
 import com.ideal.studentlog.database.repositories.SubjectRepository;
 import com.ideal.studentlog.helpers.dtos.SubjectDTO;
+import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,34 +19,44 @@ public class SubjectService {
         return subjectRepository.findAll();
     }
 
-    public void create(SubjectDTO dto){
+    public SubjectDTO create(SubjectDTO dto){
         Subject subject = new Subject();
+        map(dto, subject);
 
-        subject.setName(dto.getName());
-        subject.setCategory(dto.getCategory());
-
-        subjectRepository.save(subject);
+        return map(subjectRepository.save(subject));
     }
 
-    public SubjectDTO getById(Integer id){
-        Subject subject = subjectRepository.findById(id).orElseThrow();
-
-        return new SubjectDTO(
-                subject.getName(),
-                subject.getCategory()
-        );
+    public SubjectDTO getById(Integer id) throws ServiceException{
+        return map(getSubject(id));
     }
 
-    public void update(Integer id, SubjectDTO dto){
-        Subject subject = subjectRepository.findById(id).orElseThrow();
+    public SubjectDTO update(Integer id, SubjectDTO dto) throws ServiceException{
+        Subject subject = getSubject(id);
+        map(dto, subject);
 
-        subject.setName(dto.getName());
-        subject.setCategory(dto.getCategory());
-
-        subjectRepository.save(subject);
+        return map(subjectRepository.save(subject));
     }
 
     public void delete(Integer id){
         subjectRepository.deleteById(id);
+    }
+
+    private Subject getSubject(Integer id) throws ServiceException {
+        return subjectRepository.findById(id).orElseThrow(() -> new ServiceException(
+                "Subject not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
+    }
+
+    private void map(SubjectDTO dto, Subject subject){
+        subject.setName(dto.getName());
+        subject.setCategory(dto.getCategory());
+    }
+
+    private SubjectDTO map(Subject subject){
+        return new SubjectDTO(
+                subject.getName(),
+                subject.getCategory()
+        );
     }
 }

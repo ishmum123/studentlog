@@ -2,11 +2,13 @@ package com.ideal.studentlog.controllers;
 
 import com.ideal.studentlog.database.models.Subject;
 import com.ideal.studentlog.helpers.dtos.SubjectDTO;
+import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,18 +24,18 @@ public class SubjectController {
     }
 
     @GetMapping(path = "/{id}")
-    public SubjectDTO getById(@PathVariable("id") Integer id){
+    public SubjectDTO getById(@PathVariable("id") Integer id) throws ServiceException {
         return subjectService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody SubjectDTO dto){
+    public void create(@RequestBody @Valid SubjectDTO dto){
         subjectService.create(dto);
     }
 
     @PatchMapping(path = "/{id}")
-    public void update (@PathVariable("id") Integer id, @RequestBody SubjectDTO dto){
+    public void update (@PathVariable("id") Integer id, @RequestBody @Valid SubjectDTO dto) throws ServiceException{
         subjectService.update(id, dto);
     }
 
