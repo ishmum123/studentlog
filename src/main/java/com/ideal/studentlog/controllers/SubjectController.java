@@ -30,13 +30,13 @@ public class SubjectController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody @Valid SubjectDTO dto){
-        subjectService.create(dto);
+    public SubjectDTO create(@RequestBody @Valid SubjectDTO dto){
+        return subjectService.create(dto);
     }
 
     @PatchMapping(path = "/{id}")
-    public void update (@PathVariable("id") Integer id, @RequestBody @Valid SubjectDTO dto) throws ServiceException{
-        subjectService.update(id, dto);
+    public SubjectDTO update (@PathVariable("id") Integer id, @RequestBody @Valid SubjectDTO dto) throws ServiceException{
+        return subjectService.update(id, dto);
     }
 
     @DeleteMapping(path = "/{id}")
