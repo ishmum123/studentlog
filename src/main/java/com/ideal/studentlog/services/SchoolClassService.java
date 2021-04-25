@@ -14,21 +14,22 @@ public class SchoolClassService {
     private final SchoolClassRepository repository;
 
     //Todo: introduce model mapper
-    public SchoolClassDTO model2dto(SchoolClass schoolClass){
+    public SchoolClassDTO map(SchoolClass schoolClass){
         return new SchoolClassDTO(
                 schoolClass.getName(),
                 schoolClass.getGrade()
         );
     }
 
-    public SchoolClass dto2model(SchoolClass schoolClass, SchoolClassDTO schoolClassDTO){
+    public void map(SchoolClass schoolClass, SchoolClassDTO schoolClassDTO){
         schoolClass.setName(schoolClassDTO.getName());
         schoolClass.setGrade(schoolClassDTO.getGrade());
-        return schoolClass;
     }
 
     public SchoolClass createModelWithDTO(SchoolClassDTO schoolClassDTO){
-        return dto2model(new SchoolClass(), schoolClassDTO);
+        SchoolClass schoolClass = new SchoolClass();
+        map(schoolClass, schoolClassDTO);
+        return schoolClass;
     }
 
     public List<SchoolClass> getAll(){
@@ -37,7 +38,7 @@ public class SchoolClassService {
 
     public SchoolClassDTO getById(Integer id){
         SchoolClass schoolClass = repository.findById(id).orElseThrow();
-        return model2dto(schoolClass);
+        return map(schoolClass);
     }
 
     public void create(SchoolClassDTO schoolClassDTO){
@@ -46,7 +47,7 @@ public class SchoolClassService {
 
     public void update(Integer id, SchoolClassDTO schoolClassDTO){
         SchoolClass schoolClass = repository.findById(id).orElseThrow();
-        schoolClass = dto2model(schoolClass, schoolClassDTO);
+        map(schoolClass, schoolClassDTO);
         repository.save(schoolClass);
     }
 

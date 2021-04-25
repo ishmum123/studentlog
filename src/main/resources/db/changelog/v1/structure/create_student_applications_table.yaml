@@ -15,7 +15,7 @@ databaseChangeLog:
                            nullable: false
                     -  column:
                          name: applied_date
-                         type: date
+                         type: dateTime
                          constraints:
                            nullable: false
                     -  column:
@@ -31,7 +31,7 @@ databaseChangeLog:
                           nullable: false
                     - column:
                         name: date_of_birth
-                        type: date
+                        type: dateTime
                         constraints:
                           nullable: false
                     - column:

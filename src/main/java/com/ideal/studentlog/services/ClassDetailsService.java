@@ -16,7 +16,7 @@ public class ClassDetailsService {
     private final TeacherRepository teacherRepository;
 
     //Todo: introduce model mapper
-    public ClassDetailsDTO model2dto(ClassDetails classDetails){
+    public ClassDetailsDTO map(ClassDetails classDetails){
         return new ClassDetailsDTO(
                 classDetails.getSchoolClass(),
                 classDetails.getYear(),
@@ -24,15 +24,16 @@ public class ClassDetailsService {
         );
     }
 
-    public ClassDetails dto2model(ClassDetails classDetails, ClassDetailsDTO classDetailsDTO){
+    public void map(ClassDetails classDetails, ClassDetailsDTO classDetailsDTO){
         classDetails.setSchoolClass(classDetailsDTO.getSchoolClass());
         classDetails.setYear(classDetailsDTO.getYear());
         classDetails.setTeacher(teacherRepository.findById(classDetailsDTO.getTeacherId()).orElseThrow());
-        return classDetails;
     }
 
     public ClassDetails createModelWithDTO(ClassDetailsDTO classDetailsDTO){
-        return dto2model(new ClassDetails(), classDetailsDTO);
+        ClassDetails classDetails = new ClassDetails();
+        map(classDetails, classDetailsDTO);
+        return classDetails;
     }
 
     public List<ClassDetails> getAll(){
@@ -41,7 +42,7 @@ public class ClassDetailsService {
 
     public ClassDetailsDTO getById(Integer id){
         ClassDetails classDetails = repository.findById(id).orElseThrow();
-        return model2dto(classDetails);
+        return map(classDetails);
     }
 
     public void create(ClassDetailsDTO classDetailsDTO){
@@ -50,7 +51,7 @@ public class ClassDetailsService {
 
     public void update(Integer id, ClassDetailsDTO classDetailsDTO){
         ClassDetails classDetails = repository.findById(id).orElseThrow();
-        classDetails = dto2model(classDetails, classDetailsDTO);
+        map(classDetails, classDetailsDTO);
         repository.save(classDetails);
     }
 

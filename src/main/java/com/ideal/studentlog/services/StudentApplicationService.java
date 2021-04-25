@@ -16,7 +16,7 @@ public class StudentApplicationService {
     private final AdminRepository adminRepository;
 
     //Todo: introduce model mapper
-    public StudentApplicationDTO model2dto(StudentApplication studentApplication){
+    public StudentApplicationDTO map(StudentApplication studentApplication){
         return new StudentApplicationDTO(
                 studentApplication.getAppliedDate(),
                 studentApplication.getApprovedBy().getId(),
@@ -34,7 +34,7 @@ public class StudentApplicationService {
         );
     }
 
-    public StudentApplication dto2model(StudentApplication studentApplication, StudentApplicationDTO dto){
+    public void map(StudentApplication studentApplication, StudentApplicationDTO dto){
         studentApplication.setAppliedDate(dto.getAppliedDate());
         studentApplication.setApprovedBy(adminRepository.findById(dto.getApprovedBy()).orElseThrow());
         studentApplication.setName(dto.getName());
@@ -48,13 +48,11 @@ public class StudentApplicationService {
         studentApplication.setGuardianEmail(dto.getGuardianEmail());
         studentApplication.setGuardianPhone(dto.getGuardianPhone());
         studentApplication.setAppliedForGrade(dto.getAppliedForGrade());
-
-        return studentApplication;
     }
 
     public StudentApplication createModelWithDTO(StudentApplicationDTO dto){
         StudentApplication studentApplication = new StudentApplication();
-        studentApplication = dto2model(studentApplication, dto);
+        map(studentApplication, dto);
         return studentApplication;
     }
 
@@ -69,12 +67,12 @@ public class StudentApplicationService {
 
     public StudentApplicationDTO getById(Integer id) {
         StudentApplication studentApplication = repository.findById(id).orElseThrow();
-        return model2dto(studentApplication);
+        return map(studentApplication);
     }
 
     public void update(Integer id, StudentApplicationDTO dto) {
         StudentApplication studentApplication = repository.findById(id).orElseThrow();
-        studentApplication = dto2model(studentApplication, dto);
+        map(studentApplication, dto);
         repository.save(studentApplication);
     }
 
