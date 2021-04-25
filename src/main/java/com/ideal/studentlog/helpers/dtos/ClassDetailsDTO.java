@@ -9,7 +9,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class ClassDetailsDTO {
     @NonNull
-    SchoolClass schoolClass;
+    Integer schoolClassId;
 
     @NonNull
     String year;

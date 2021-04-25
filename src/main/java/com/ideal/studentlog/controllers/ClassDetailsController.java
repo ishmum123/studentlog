@@ -30,13 +30,13 @@ public class ClassDetailsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody ClassDetailsDTO dto) throws ServiceException {
-        service.create(dto);
+    public ClassDetailsDTO create(@RequestBody ClassDetailsDTO dto) throws ServiceException {
+        return service.create(dto);
     }
 
     @PatchMapping(path = "/{id}")
-    public void update(@PathVariable("id") Integer id, @RequestBody ClassDetailsDTO dto) throws ServiceException {
-        service.update(id, dto);
+    public ClassDetailsDTO update(@PathVariable("id") Integer id, @RequestBody ClassDetailsDTO dto) throws ServiceException {
+        return service.update(id, dto);
     }
 
     @DeleteMapping(path = "/{id}")

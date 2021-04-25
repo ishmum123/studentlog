@@ -2,6 +2,7 @@ package com.ideal.studentlog.services;
 
 import com.ideal.studentlog.database.models.ClassDetails;
 import com.ideal.studentlog.database.repositories.ClassDetailsRepository;
+import com.ideal.studentlog.database.repositories.SchoolClassRepository;
 import com.ideal.studentlog.database.repositories.TeacherRepository;
 import com.ideal.studentlog.helpers.dtos.ClassDetailsDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
@@ -16,19 +17,24 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ClassDetailsService {
     private final ClassDetailsRepository repository;
+    private final SchoolClassRepository schoolClassRepository;
     private final TeacherRepository teacherRepository;
 
     //Todo: introduce model mapper
     public ClassDetailsDTO map(ClassDetails classDetails){
         return new ClassDetailsDTO(
-                classDetails.getSchoolClass(),
+                classDetails.getSchoolClass().getId(),
                 classDetails.getYear(),
                 classDetails.getTeacher().getId()
         );
     }
 
     public void map(ClassDetails classDetails, ClassDetailsDTO classDetailsDTO) throws ServiceException {
-        classDetails.setSchoolClass(classDetailsDTO.getSchoolClass());
+        classDetails.setSchoolClass(schoolClassRepository.findById(classDetailsDTO.getSchoolClassId()).orElseThrow(
+                () -> new ServiceException(
+                "School Class not found with ID: " + classDetailsDTO.getSchoolClassId(),
+                HttpStatus.NOT_FOUND
+        )));
         classDetails.setYear(classDetailsDTO.getYear());
         classDetails.setTeacher(teacherRepository.findById(classDetailsDTO.getTeacherId()).orElseThrow(
                 () -> new ServiceException(
