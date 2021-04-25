@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,14 +38,21 @@ public class ClassStudentService {
         classStudent.setStudent(studentRepository.findById(classStudentDTO.getStudentId()).orElseThrow());
     }
 
+    public List<ClassStudentDTO> map(List<ClassStudent> classStudents){
+        return classStudents
+                .stream()
+                .map(this::map)
+                .collect(Collectors.toList());
+    }
+
     public ClassStudent createModelWithDTO(ClassStudentDTO classStudentDTO) throws ServiceException {
         ClassStudent classStudent = new ClassStudent();
         map(classStudent, classStudentDTO);
         return classStudent;
     }
 
-    public List<ClassStudent> getAll(){
-        return repository.findAll();
+    public List<ClassStudentDTO> getAll(){
+        return map(repository.findAll());
     }
 
     public ClassStudentDTO getById(Integer id) throws ServiceException {
@@ -55,17 +63,17 @@ public class ClassStudentService {
         return map(classStudent);
     }
 
-    public void create(ClassStudentDTO classStudentDTO) throws ServiceException {
-        repository.save(createModelWithDTO(classStudentDTO));
+    public ClassStudentDTO create(ClassStudentDTO classStudentDTO) throws ServiceException {
+        return map(repository.save(createModelWithDTO(classStudentDTO)));
     }
 
-    public void update(Integer id, ClassStudentDTO classStudentDTO) throws ServiceException {
+    public ClassStudentDTO update(Integer id, ClassStudentDTO classStudentDTO) throws ServiceException {
         ClassStudent classStudent = repository.findById(id).orElseThrow(() -> new ServiceException(
                 "Class Student not found with ID: " + id,
                 HttpStatus.NOT_FOUND
         ));
         map(classStudent, classStudentDTO);
-        repository.save(classStudent);
+        return map(repository.save(classStudent));
     }
 
     public void delete(Integer id) {

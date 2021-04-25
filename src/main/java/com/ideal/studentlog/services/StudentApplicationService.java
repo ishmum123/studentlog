@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,19 +53,26 @@ public class StudentApplicationService {
         studentApplication.setAppliedForGrade(dto.getAppliedForGrade());
     }
 
+    public List<StudentApplicationDTO> map(List<StudentApplication> studentApplications){
+        return studentApplications
+                .stream()
+                .map(this::map)
+                .collect(Collectors.toList());
+    }
+
     public StudentApplication createModelWithDTO(StudentApplicationDTO dto){
         StudentApplication studentApplication = new StudentApplication();
         map(studentApplication, dto);
         return studentApplication;
     }
 
-    public List<StudentApplication> getAll() {
-        return repository.findAll();
+    public List<StudentApplicationDTO> getAll() {
+        return map(repository.findAll());
     }
 
-    public void create(StudentApplicationDTO dto) {
+    public StudentApplicationDTO create(StudentApplicationDTO dto) {
         StudentApplication studentApplication = createModelWithDTO(dto);
-        repository.save(studentApplication);
+        return map(repository.save(studentApplication));
     }
 
     public StudentApplicationDTO getById(Integer id) throws ServiceException {
@@ -75,13 +83,13 @@ public class StudentApplicationService {
         return map(studentApplication);
     }
 
-    public void update(Integer id, StudentApplicationDTO dto) throws ServiceException {
+    public StudentApplicationDTO update(Integer id, StudentApplicationDTO dto) throws ServiceException {
         StudentApplication studentApplication = repository.findById(id).orElseThrow(() -> new ServiceException(
                 "Student Application not found with ID: " + id,
                 HttpStatus.NOT_FOUND
         ));
         map(studentApplication, dto);
-        repository.save(studentApplication);
+        return map(repository.save(studentApplication));
     }
 
     public void delete(Integer id) {

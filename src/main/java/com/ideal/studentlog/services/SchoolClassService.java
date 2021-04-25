@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,14 +29,22 @@ public class SchoolClassService {
         schoolClass.setGrade(schoolClassDTO.getGrade());
     }
 
+    public List<SchoolClassDTO> map(List<SchoolClass> schoolClasses){
+        return schoolClasses
+                .stream()
+                .map(this::map)
+                .collect(Collectors.toList());
+    }
+
+
     public SchoolClass createModelWithDTO(SchoolClassDTO schoolClassDTO){
         SchoolClass schoolClass = new SchoolClass();
         map(schoolClass, schoolClassDTO);
         return schoolClass;
     }
 
-    public List<SchoolClass> getAll(){
-        return repository.findAll();
+    public List<SchoolClassDTO> getAll(){
+        return map(repository.findAll());
     }
 
     public SchoolClassDTO getById(Integer id) throws ServiceException {
@@ -46,17 +55,17 @@ public class SchoolClassService {
         return map(schoolClass);
     }
 
-    public void create(SchoolClassDTO schoolClassDTO){
-        repository.save(createModelWithDTO(schoolClassDTO));
+    public SchoolClassDTO create(SchoolClassDTO schoolClassDTO){
+        return map(repository.save(createModelWithDTO(schoolClassDTO)));
     }
 
-    public void update(Integer id, SchoolClassDTO schoolClassDTO) throws ServiceException {
+    public SchoolClassDTO update(Integer id, SchoolClassDTO schoolClassDTO) throws ServiceException {
         SchoolClass schoolClass = repository.findById(id).orElseThrow(() -> new ServiceException(
                 "School Class not found with ID: " + id,
                 HttpStatus.NOT_FOUND
         ));
         map(schoolClass, schoolClassDTO);
-        repository.save(schoolClass);
+        return map(repository.save(schoolClass));
     }
 
     public void delete(Integer id) {

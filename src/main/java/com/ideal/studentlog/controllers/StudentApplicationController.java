@@ -19,7 +19,7 @@ public class StudentApplicationController {
     private final StudentApplicationService service;
 
     @GetMapping
-    public List<StudentApplication> getAll() {
+    public List<StudentApplicationDTO> getAll() {
         return service.getAll();
     }
 
@@ -30,13 +30,13 @@ public class StudentApplicationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody StudentApplicationDTO dto) {
-        service.create(dto);
+    public StudentApplicationDTO create(@RequestBody StudentApplicationDTO dto) {
+        return service.create(dto);
     }
 
     @PatchMapping(path = "/{id}")
-    public void update(@PathVariable("id") Integer id, @RequestBody StudentApplicationDTO dto) throws ServiceException {
-        service.update(id, dto);
+    public StudentApplicationDTO update(@PathVariable("id") Integer id, @RequestBody StudentApplicationDTO dto) throws ServiceException {
+        return service.update(id, dto);
     }
 
     @DeleteMapping(path = "/{id}")

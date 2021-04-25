@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,14 +37,21 @@ public class ClassDetailsService {
         )));
     }
 
+    public List<ClassDetailsDTO> map(List<ClassDetails> classDetailsList){
+        return classDetailsList
+                .stream()
+                .map(this::map)
+                .collect(Collectors.toList());
+    }
+
     public ClassDetails createModelWithDTO(ClassDetailsDTO classDetailsDTO) throws ServiceException {
         ClassDetails classDetails = new ClassDetails();
         map(classDetails, classDetailsDTO);
         return classDetails;
     }
 
-    public List<ClassDetails> getAll(){
-        return repository.findAll();
+    public List<ClassDetailsDTO> getAll(){
+        return map(repository.findAll());
     }
 
     public ClassDetailsDTO getById(Integer id) throws ServiceException {
@@ -54,17 +62,17 @@ public class ClassDetailsService {
         return map(classDetails);
     }
 
-    public void create(ClassDetailsDTO classDetailsDTO) throws ServiceException {
-        repository.save(createModelWithDTO(classDetailsDTO));
+    public ClassDetailsDTO create(ClassDetailsDTO classDetailsDTO) throws ServiceException {
+        return map(repository.save(createModelWithDTO(classDetailsDTO)));
     }
 
-    public void update(Integer id, ClassDetailsDTO classDetailsDTO) throws ServiceException {
+    public ClassDetailsDTO update(Integer id, ClassDetailsDTO classDetailsDTO) throws ServiceException {
         ClassDetails classDetails = repository.findById(id).orElseThrow(() -> new ServiceException(
                 "Class Details not found with ID: " + id,
                 HttpStatus.NOT_FOUND
         ));
         map(classDetails, classDetailsDTO);
-        repository.save(classDetails);
+        return map(repository.save(classDetails));
     }
 
     public void delete(Integer id) {

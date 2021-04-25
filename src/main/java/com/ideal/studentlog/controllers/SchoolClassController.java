@@ -19,7 +19,7 @@ public class SchoolClassController {
     private final SchoolClassService service;
 
     @GetMapping
-    public List<SchoolClass> getAll() {
+    public List<SchoolClassDTO> getAll() {
         return service.getAll();
     }
 
