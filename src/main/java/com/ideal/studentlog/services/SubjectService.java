@@ -9,14 +9,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class SubjectService {
     private final SubjectRepository subjectRepository;
 
-    public List<Subject> getAll(){
-        return subjectRepository.findAll();
+    public List<SubjectDTO> getAll(){
+        return subjectRepository
+                .findAll()
+                .stream()
+                .map(this::map)
+                .collect(Collectors.toList());
     }
 
     public SubjectDTO create(SubjectDTO dto){

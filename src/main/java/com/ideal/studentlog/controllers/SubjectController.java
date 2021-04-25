@@ -19,7 +19,7 @@ public class SubjectController {
     private final SubjectService subjectService;
 
     @GetMapping
-    public List<Subject> getAll(){
+    public List<SubjectDTO> getAll(){
         return subjectService.getAll();
     }
 
