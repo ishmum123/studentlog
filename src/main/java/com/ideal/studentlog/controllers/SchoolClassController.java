@@ -1,7 +1,6 @@
 package com.ideal.studentlog.controllers;
 
 
-import com.ideal.studentlog.database.models.SchoolClass;
 import com.ideal.studentlog.helpers.dtos.SchoolClassDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.SchoolClassService;
@@ -30,13 +29,13 @@ public class SchoolClassController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody SchoolClassDTO dto) {
-        service.create(dto);
+    public SchoolClassDTO create(@RequestBody SchoolClassDTO dto) {
+        return service.create(dto);
     }
 
     @PatchMapping(path = "/{id}")
-    public void update(@PathVariable("id") Integer id, @RequestBody SchoolClassDTO dto) throws ServiceException {
-        service.update(id, dto);
+    public SchoolClassDTO update(@PathVariable("id") Integer id, @RequestBody SchoolClassDTO dto) throws ServiceException {
+        return service.update(id, dto);
     }
 
     @DeleteMapping(path = "/{id}")
