@@ -7,8 +7,10 @@ import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,26 +18,33 @@ public class StudentService {
 
     private final StudentRepository repository;
 
-    public List<Student> getAll() {
-        return repository.findAll();
-    }
-
-    public StudentDTO create(StudentDTO dto) {
-        Student student = new Student();
-        map(dto, student);
-        return map(repository.save(student));
+    public List<StudentDTO> getAll() {
+        return repository
+                .findAll()
+                .stream()
+                .map(this::map)
+                .collect(Collectors.toList());
     }
 
     public StudentDTO getById(Integer id) throws ServiceException {
         return map(getStudent(id));
     }
 
+    @Transactional
+    public StudentDTO create(StudentDTO dto) {
+        Student student = new Student();
+        map(dto, student);
+        return map(repository.save(student));
+    }
+
+    @Transactional
     public StudentDTO update(Integer id, StudentDTO dto) throws ServiceException {
         Student student = getStudent(id);
         map(dto, student);
         return map(repository.save(student));
     }
 
+    @Transactional
     public void delete(Integer id) {
         repository.deleteById(id);
     }
