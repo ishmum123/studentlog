@@ -3,7 +3,9 @@ package com.ideal.studentlog.services;
 import com.ideal.studentlog.database.models.SchoolClass;
 import com.ideal.studentlog.database.repositories.SchoolClassRepository;
 import com.ideal.studentlog.helpers.dtos.SchoolClassDTO;
+import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,8 +38,11 @@ public class SchoolClassService {
         return repository.findAll();
     }
 
-    public SchoolClassDTO getById(Integer id){
-        SchoolClass schoolClass = repository.findById(id).orElseThrow();
+    public SchoolClassDTO getById(Integer id) throws ServiceException {
+        SchoolClass schoolClass = repository.findById(id).orElseThrow(() -> new ServiceException(
+                "School Class not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
         return map(schoolClass);
     }
 
@@ -45,8 +50,11 @@ public class SchoolClassService {
         repository.save(createModelWithDTO(schoolClassDTO));
     }
 
-    public void update(Integer id, SchoolClassDTO schoolClassDTO){
-        SchoolClass schoolClass = repository.findById(id).orElseThrow();
+    public void update(Integer id, SchoolClassDTO schoolClassDTO) throws ServiceException {
+        SchoolClass schoolClass = repository.findById(id).orElseThrow(() -> new ServiceException(
+                "School Class not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
         map(schoolClass, schoolClassDTO);
         repository.save(schoolClass);
     }

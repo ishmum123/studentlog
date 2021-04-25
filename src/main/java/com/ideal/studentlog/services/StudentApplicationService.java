@@ -4,7 +4,9 @@ import com.ideal.studentlog.database.models.StudentApplication;
 import com.ideal.studentlog.database.repositories.AdminRepository;
 import com.ideal.studentlog.database.repositories.StudentApplicationRepository;
 import com.ideal.studentlog.helpers.dtos.StudentApplicationDTO;
+import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,13 +67,19 @@ public class StudentApplicationService {
         repository.save(studentApplication);
     }
 
-    public StudentApplicationDTO getById(Integer id) {
-        StudentApplication studentApplication = repository.findById(id).orElseThrow();
+    public StudentApplicationDTO getById(Integer id) throws ServiceException {
+        StudentApplication studentApplication = repository.findById(id).orElseThrow(() -> new ServiceException(
+                "Student Application not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
         return map(studentApplication);
     }
 
-    public void update(Integer id, StudentApplicationDTO dto) {
-        StudentApplication studentApplication = repository.findById(id).orElseThrow();
+    public void update(Integer id, StudentApplicationDTO dto) throws ServiceException {
+        StudentApplication studentApplication = repository.findById(id).orElseThrow(() -> new ServiceException(
+                "Student Application not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
         map(studentApplication, dto);
         repository.save(studentApplication);
     }
