@@ -1,0 +1,4 @@
+id,name,date_of_birth,joining_date,resignation_date,highest_education_level,national_registration_no,teacher_id,designation,contact_no,present_address,permanent_address,blood_group
+1,Abdul Karim,2080-04-23,2005-04-24,2005-04-23,MSc,1234567890,1001,Professor,8801123456789,Kulna,"Kolabagan, Dhaka",A+
+2,Abdur Razzak,2079-01-01,2004-01-01,2003-12-14,MSc,2345678901,1002,Professor,8801234567890,Chattagram,"Adabor, Dhaka",A-
+3,Sobur Ali Khan,2092-07-15,2018-01-01,2017-12-25,BSc,3456789012,1003,lecturer,8801345678901,Rajshahi,"Bashabo, Dhaka",B+

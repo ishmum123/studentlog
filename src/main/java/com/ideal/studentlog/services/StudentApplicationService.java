@@ -1,6 +1,7 @@
 package com.ideal.studentlog.services;
 
 import com.ideal.studentlog.database.models.StudentApplication;
+import com.ideal.studentlog.database.repositories.AdminRepository;
 import com.ideal.studentlog.database.repositories.StudentApplicationRepository;
 import com.ideal.studentlog.helpers.dtos.StudentApplicationDTO;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +13,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentApplicationService {
     private final StudentApplicationRepository repository;
+    private final AdminRepository adminRepository;
 
     //Todo: introduce model mapper
     public StudentApplicationDTO model2dto(StudentApplication studentApplication){
         return new StudentApplicationDTO(
                 studentApplication.getAppliedDate(),
-                studentApplication.getApprovedBy(),
+                studentApplication.getApprovedBy().getId(),
                 studentApplication.getName(),
                 studentApplication.getDateOfBirth(),
                 studentApplication.getBloodGroup(),
@@ -34,7 +36,7 @@ public class StudentApplicationService {
 
     public StudentApplication dto2model(StudentApplication studentApplication, StudentApplicationDTO dto){
         studentApplication.setAppliedDate(dto.getAppliedDate());
-        studentApplication.setApprovedBy(dto.getApprovedBy());
+        studentApplication.setApprovedBy(adminRepository.findById(dto.getApprovedBy()).orElseThrow());
         studentApplication.setName(dto.getName());
         studentApplication.setDateOfBirth(dto.getDateOfBirth());
         studentApplication.setBloodGroup(dto.getBloodGroup());
