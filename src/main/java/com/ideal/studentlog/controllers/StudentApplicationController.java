@@ -30,7 +30,7 @@ public class StudentApplicationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public StudentApplicationDTO create(@RequestBody StudentApplicationDTO dto) {
+    public StudentApplicationDTO create(@RequestBody StudentApplicationDTO dto) throws ServiceException {
         return service.create(dto);
     }
 

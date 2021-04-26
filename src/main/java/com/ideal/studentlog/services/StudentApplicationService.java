@@ -37,9 +37,14 @@ public class StudentApplicationService {
         );
     }
 
-    public void map(StudentApplication studentApplication, StudentApplicationDTO dto){
+    public void map(StudentApplication studentApplication, StudentApplicationDTO dto) throws ServiceException {
         studentApplication.setAppliedDate(dto.getAppliedDate());
-        studentApplication.setApprovedBy(adminRepository.findById(dto.getApprovedBy()).orElseThrow());
+        studentApplication.setApprovedBy(adminRepository.findById(dto.getApprovedBy()).orElseThrow(
+                () -> new ServiceException(
+                        "Admin not found with ID: " + dto.getApprovedBy(),
+                        HttpStatus.NOT_FOUND
+                )
+        ));
         studentApplication.setName(dto.getName());
         studentApplication.setDateOfBirth(dto.getDateOfBirth());
         studentApplication.setBloodGroup(dto.getBloodGroup());
@@ -60,7 +65,7 @@ public class StudentApplicationService {
                 .collect(Collectors.toList());
     }
 
-    public StudentApplication createModelWithDTO(StudentApplicationDTO dto){
+    public StudentApplication createModelWithDTO(StudentApplicationDTO dto) throws ServiceException {
         StudentApplication studentApplication = new StudentApplication();
         map(studentApplication, dto);
         return studentApplication;
@@ -70,7 +75,7 @@ public class StudentApplicationService {
         return map(repository.findAll());
     }
 
-    public StudentApplicationDTO create(StudentApplicationDTO dto) {
+    public StudentApplicationDTO create(StudentApplicationDTO dto) throws ServiceException {
         StudentApplication studentApplication = createModelWithDTO(dto);
         return map(repository.save(studentApplication));
     }
