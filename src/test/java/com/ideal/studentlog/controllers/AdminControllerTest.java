@@ -46,7 +46,7 @@ public class AdminControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name", is("MD SHOEB AL AFNAN")))
-                .andExpect(jsonPath("$[1].bloodGroup", is("A+")))
+                .andExpect(jsonPath("$[1].blood_group", is("A+")))
                 .andExpect(jsonPath("$", hasSize(10)));
     }
 
@@ -57,7 +57,7 @@ public class AdminControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("AYMAN RAHMAN")))
-                .andExpect(jsonPath("$.presentAddress", is("Kolabagan, Dhaka")));
+                .andExpect(jsonPath("$.present_address", is("Kolabagan, Dhaka")));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class AdminControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is("Test Admin")))
-                .andExpect(jsonPath("$.adminId", is("test-id")));
+                .andExpect(jsonPath("$.admin_id", is("test-id")));
 
         assertEquals(repository.count(), 11);
     }
@@ -89,7 +89,7 @@ public class AdminControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("Test Admin")))
-                .andExpect(jsonPath("$.adminId", is("test-id")));
+                .andExpect(jsonPath("$.admin_id", is("test-id")));
 
         assertEquals(repository.count(), 10);
     }

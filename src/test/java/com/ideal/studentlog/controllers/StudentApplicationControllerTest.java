@@ -47,7 +47,7 @@ public class StudentApplicationControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name", is("Tori Muldoon")))
-                .andExpect(jsonPath("$[1].bloodGroup", is("A-")))
+                .andExpect(jsonPath("$[1].blood_group", is("A-")))
                 .andExpect(jsonPath("$", hasSize(20)));
     }
 
@@ -58,7 +58,7 @@ public class StudentApplicationControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("Luise Halesworth")))
-                .andExpect(jsonPath("$.presentAddress", is("3 Esch Way")));
+                .andExpect(jsonPath("$.present_address", is("3 Esch Way")));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class StudentApplicationControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is("applicant name")))
-                .andExpect(jsonPath("$.birthRegistrationId", is("1231541241")));
+                .andExpect(jsonPath("$.birth_registration_id", is("1231541241")));
 
         assertEquals(repository.count(), 21);
     }
@@ -90,7 +90,7 @@ public class StudentApplicationControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("applicant name")))
-                .andExpect(jsonPath("$.birthRegistrationId", is("1231541241")));
+                .andExpect(jsonPath("$.birth_registration_id", is("1231541241")));
 
         assertEquals(repository.count(), 20);
     }

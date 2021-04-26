@@ -42,8 +42,8 @@ public class TestResultControllerTest {
                 .perform(get("/test-results"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].testId", is(1)))
-                .andExpect(jsonPath("$[1].studentId", is(1)))
+                .andExpect(jsonPath("$[0].test_id", is(1)))
+                .andExpect(jsonPath("$[1].student_id", is(1)))
                 .andExpect(jsonPath("$", hasSize(37)));
     }
 
@@ -53,7 +53,7 @@ public class TestResultControllerTest {
                 .perform(get("/test-results/11"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.testId", is(11)))
+                .andExpect(jsonPath("$.test_id", is(11)))
                 .andExpect(jsonPath("$.grade", containsString("A+")));
     }
 
@@ -63,7 +63,7 @@ public class TestResultControllerTest {
                 .perform(get("/test-results/student/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].testId", is(1)))
+                .andExpect(jsonPath("$[0].test_id", is(1)))
                 .andExpect(jsonPath("$[2].grade", containsString("B+")))
                 .andExpect(jsonPath("$", hasSize(10)));
     }
@@ -79,7 +79,7 @@ public class TestResultControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.testId", is(5)))
+                .andExpect(jsonPath("$.test_id", is(5)))
                 .andExpect(jsonPath("$.grade", is("D-")));
 
         assertEquals(repository.count(), 38);
@@ -96,8 +96,8 @@ public class TestResultControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.testId", is(5)))
-                .andExpect(jsonPath("$.studentId", is(10)));
+                .andExpect(jsonPath("$.test_id", is(5)))
+                .andExpect(jsonPath("$.student_id", is(10)));
 
         assertEquals(repository.count(), 37);
     }
@@ -144,7 +144,7 @@ public class TestResultControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error", is("Bad Request")))
                 .andExpect(jsonPath("$.code", is("API-400")))
-                .andExpect(jsonPath("$.message", is("[Invalid value for field studentId: 100]")));
+                .andExpect(jsonPath("$.message", is("[Invalid value for field student_id: 100]")));
 
         assertEquals(repository.count(), 37);
     }

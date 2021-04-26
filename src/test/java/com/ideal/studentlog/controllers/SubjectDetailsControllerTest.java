@@ -41,8 +41,8 @@ public class SubjectDetailsControllerTest {
                 .perform(get("/subject-details"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].subjectId", is(1)))
-                .andExpect(jsonPath("$[1].teacherId" +
+                .andExpect(jsonPath("$[0].subject_id", is(1)))
+                .andExpect(jsonPath("$[1].teacher_id" +
                         "", is(2)))
                 .andExpect(jsonPath("$", hasSize(10)));
     }
@@ -53,8 +53,8 @@ public class SubjectDetailsControllerTest {
                 .perform(get("/subject-details/3"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.subjectId", is(3)))
-                .andExpect(jsonPath("$.teacherId", is(3)));
+                .andExpect(jsonPath("$.subject_id", is(3)))
+                .andExpect(jsonPath("$.teacher_id", is(3)));
     }
 
     @Test
@@ -68,8 +68,8 @@ public class SubjectDetailsControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.subjectId", is(11)))
-                .andExpect(jsonPath("$.teacherId", is(11)));
+                .andExpect(jsonPath("$.subject_id", is(11)))
+                .andExpect(jsonPath("$.teacher_id", is(11)));
 
         assertEquals(repository.count(), 11);
     }
@@ -85,8 +85,8 @@ public class SubjectDetailsControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.subjectId", is(11)))
-                .andExpect(jsonPath("$.classDetailsId", is(6)));
+                .andExpect(jsonPath("$.subject_id", is(11)))
+                .andExpect(jsonPath("$.class_details_id", is(6)));
 
         assertEquals(repository.count(), 11);
     }

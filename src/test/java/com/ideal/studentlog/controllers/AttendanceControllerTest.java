@@ -44,8 +44,8 @@ public class AttendanceControllerTest {
                 .perform(get("/attendance"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].studentId", is(1)))
-                .andExpect(jsonPath("$[1].teacherId", is(1)))
+                .andExpect(jsonPath("$[0].student_id", is(1)))
+                .andExpect(jsonPath("$[1].teacher_id", is(1)))
                 .andExpect(jsonPath("$", hasSize(9))) ;
     }
 
@@ -56,8 +56,8 @@ public class AttendanceControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.date", containsString("2021-04-23")))
-                .andExpect(jsonPath("$.studentId", is(3)))
-                .andExpect(jsonPath("$.teacherId", is(1))) ;
+                .andExpect(jsonPath("$.student_id", is(3)))
+                .andExpect(jsonPath("$.teacher_id", is(1))) ;
     }
 
     @Test
@@ -71,8 +71,8 @@ public class AttendanceControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.studentId", is(5)))
-                .andExpect(jsonPath("$.teacherId", is(2)));
+                .andExpect(jsonPath("$.student_id", is(5)))
+                .andExpect(jsonPath("$.teacher_id", is(2)));
 
 
         assertEquals(repository.count(), 10);
@@ -89,8 +89,8 @@ public class AttendanceControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.studentId", is(5)))
-                .andExpect(jsonPath("$.teacherId", is(2)));
+                .andExpect(jsonPath("$.student_id", is(5)))
+                .andExpect(jsonPath("$.teacher_id", is(2)));
 
         assertEquals(repository.count(), 9);
     }
