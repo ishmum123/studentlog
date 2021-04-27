@@ -1,4 +1,4 @@
-package com.ideal.studentlog.helpers.dtos;
+package com.ideal.studentlog.helpers.dataclass;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
