@@ -16,14 +16,6 @@ databaseChangeLog:
              relativeToChangelogFile: true
              tableName: test_results
          - loadData:
-             file: csv/teachers.csv
-             relativeToChangelogFile: true
-             tableName: teacher
-         - loadData:
-             file: csv/leave_applications.csv
-             relativeToChangelogFile: true
-             tableName: leave_application
-         - loadData:
              file: csv/subjects.csv
              relativeToChangelogFile: true
              tableName: subject
@@ -39,3 +31,27 @@ databaseChangeLog:
              file: csv/admins.csv
              relativeToChangelogFile: true
              tableName: admin
+         - loadData:
+             file: csv/teachers.csv
+             relativeToChangelogFile: true
+             tableName: teacher
+         - loadData:
+             file: csv/student_applications.csv
+             relativeToChangelogFile: true
+             tableName: student_application
+         - loadData:
+             file: csv/leave_applications.csv
+             relativeToChangelogFile: true
+             tableName: leave_application
+         - loadData:
+             file: csv/school_classes.csv
+             relativeToChangelogFile: true
+             tableName: school_class
+         - loadData:
+             file: csv/class_details.csv
+             relativeToChangelogFile: true
+             tableName: class_details
+         - loadData:
+             file: csv/class_students.csv
+             relativeToChangelogFile: true
+             tableName: class_student

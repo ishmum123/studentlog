@@ -2,7 +2,7 @@ package com.ideal.studentlog.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideal.studentlog.database.repositories.StudentRepository;
-import com.ideal.studentlog.helpers.dtos.StudentDTO;
+import com.ideal.studentlog.helpers.dataclass.StudentDTO;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -124,6 +124,7 @@ public class StudentControllerTest {
     @Contract(" -> new")
     private StudentDTO getDto() {
         return new StudentDTO(
+                null,
                 "Test Student",
                 "b:reg-001",
                 "student-001",

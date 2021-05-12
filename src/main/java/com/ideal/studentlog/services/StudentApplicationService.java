@@ -1,88 +1,91 @@
 package com.ideal.studentlog.services;
 
 import com.ideal.studentlog.database.models.StudentApplication;
+import com.ideal.studentlog.database.models.Admin;
+import com.ideal.studentlog.database.repositories.AdminRepository;
 import com.ideal.studentlog.database.repositories.StudentApplicationRepository;
-import com.ideal.studentlog.helpers.dtos.StudentApplicationDTO;
+import com.ideal.studentlog.helpers.dataclass.StudentApplicationDTO;
+import com.ideal.studentlog.helpers.exceptions.ServiceException;
+import com.ideal.studentlog.helpers.mappers.StudentApplicationMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class StudentApplicationService {
+    private static final StudentApplicationMapper mapper = StudentApplicationMapper.INSTANCE;
+
     private final StudentApplicationRepository repository;
+    private final AdminRepository adminRepository;
 
-    //Todo: introduce model mapper
-    public StudentApplicationDTO model2dto(StudentApplication studentApplication){
-        return new StudentApplicationDTO(
-                studentApplication.getAppliedDate(),
-                studentApplication.getApprovedBy(),
-                studentApplication.getName(),
-                studentApplication.getDateOfBirth(),
-                studentApplication.getBloodGroup(),
-                studentApplication.getBirthRegistrationId(),
-                studentApplication.getRegistrationId(),
-                studentApplication.getPresentAddress(),
-                studentApplication.getPermanentAddress(),
-                studentApplication.getGuardianName(),
-                studentApplication.getGuardianEmail(),
-                studentApplication.getGuardianPhone(),
-                studentApplication.getAppliedForGrade()
-        );
+
+    public List<StudentApplicationDTO> getAll() {
+        return repository
+                .findAll()
+                .stream()
+                .map(mapper::studentApplicationToStudentApplicationDto)
+                .collect(Collectors.toList());
     }
 
-    public StudentApplication dto2model(StudentApplication studentApplication, StudentApplicationDTO dto){
-        studentApplication.setAppliedDate(dto.getAppliedDate());
-        studentApplication.setApprovedBy(dto.getApprovedBy());
-        studentApplication.setName(dto.getName());
-        studentApplication.setDateOfBirth(dto.getDateOfBirth());
-        studentApplication.setBloodGroup(dto.getBloodGroup());
-        studentApplication.setBirthRegistrationId(dto.getBirthRegistrationId());
-        studentApplication.setRegistrationId(dto.getRegistrationId());
-        studentApplication.setPresentAddress(dto.getPresentAddress());
-        studentApplication.setPermanentAddress(dto.getPermanentAddress());
-        studentApplication.setGuardianName(dto.getGuardianName());
-        studentApplication.setGuardianEmail(dto.getGuardianEmail());
-        studentApplication.setGuardianPhone(dto.getGuardianPhone());
-        studentApplication.setAppliedForGrade(dto.getAppliedForGrade());
-
-        return studentApplication;
-    }
-
-    public StudentApplication createModelWithDTO(StudentApplicationDTO dto){
+    public StudentApplicationDTO create(StudentApplicationDTO dto) throws ServiceException {
+        //TODO: include this check in other services as well if we add `id` to DTO.
+        if(dto.getId() != null){
+            throw new ServiceException(
+                    "DTO includes non null id: " + dto.getId(),
+                    HttpStatus.NOT_ACCEPTABLE
+            );
+        }
         StudentApplication studentApplication = new StudentApplication();
-        studentApplication = dto2model(studentApplication, dto);
-        return studentApplication;
+
+        mapper.studentApplicationDtoToStudentApplication(dto, studentApplication);
+        studentApplication.setDecidedBy(getAdmin(dto.getDecidedById()));
+
+        return mapper.studentApplicationToStudentApplicationDto(repository.save(studentApplication));
     }
 
-    public List<StudentApplication> getAll() {
-        return repository.findAll();
+    public StudentApplicationDTO getById(Integer id) throws ServiceException {
+        return mapper.studentApplicationToStudentApplicationDto(getStudentApplication(id));
     }
 
-    public void create(StudentApplicationDTO dto) {
-        StudentApplication studentApplication = createModelWithDTO(dto);
-        repository.save(studentApplication);
-    }
+    public StudentApplicationDTO update(Integer id, StudentApplicationDTO dto) throws ServiceException {
+        //TODO: include this check in other services as well if we add `id` to DTO.
+        if(dto.getId() != id){
+            throw new ServiceException(
+                    "DTO id not equal to path id",
+                    HttpStatus.NOT_ACCEPTABLE
+            );
+        }
+        StudentApplication studentApplication = getStudentApplication(id);
 
-    public StudentApplicationDTO getById(Integer id) {
-        StudentApplication studentApplication = repository.findById(id).orElseThrow();
-        return model2dto(studentApplication);
-    }
+        mapper.studentApplicationDtoToStudentApplication(dto, studentApplication);
+        studentApplication.setDecidedBy(getAdmin(dto.getDecidedById()));
 
-    public void update(Integer id, StudentApplicationDTO dto) {
-        StudentApplication studentApplication = repository.findById(id).orElseThrow();
-        studentApplication = dto2model(studentApplication, dto);
-        repository.save(studentApplication);
+        return mapper.studentApplicationToStudentApplicationDto(repository.save(studentApplication));
     }
 
     public void delete(Integer id) {
         repository.deleteById(id);
     }
 
+    public StudentApplication getStudentApplication(Integer id) throws ServiceException {
+        return repository.findById(id).orElseThrow(() -> new ServiceException(
+                "Student Application not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
+    }
 
-
-
-
+    private Admin getAdmin(Integer id) throws ServiceException {
+        if(id==null){
+            return null;
+        }
+        return adminRepository.findById(id).orElseThrow(() -> new ServiceException(
+                "Admin not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
+    }
 
 }

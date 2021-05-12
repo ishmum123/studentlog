@@ -2,7 +2,7 @@ package com.ideal.studentlog.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideal.studentlog.database.repositories.SubjectDetailsRepository;
-import com.ideal.studentlog.helpers.dtos.SubjectDetailsDTO;
+import com.ideal.studentlog.helpers.dataclass.SubjectDetailsDTO;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -68,8 +68,8 @@ public class SubjectDetailsControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.subjectId", is(11)))
-                .andExpect(jsonPath("$.teacherId", is(11)));
+                .andExpect(jsonPath("$.subjectId", is(10)))
+                .andExpect(jsonPath("$.teacherId", is(10)));
 
         assertEquals(repository.count(), 11);
     }
@@ -85,10 +85,10 @@ public class SubjectDetailsControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.subjectId", is(11)))
-                .andExpect(jsonPath("$.classDetailsId", is(6)));
+                .andExpect(jsonPath("$.subjectId", is(10)))
+                .andExpect(jsonPath("$.classDetailsId", is(10)));
 
-        assertEquals(repository.count(), 11);
+        assertEquals(repository.count(), 10);
     }
 
     @Test
@@ -121,9 +121,9 @@ public class SubjectDetailsControllerTest {
     @Contract(" -> new")
     private SubjectDetailsDTO getDto() {
         return new SubjectDetailsDTO(
-                11,
-                11,
-                6
+                10,
+                10,
+                10
         );
     }
 
