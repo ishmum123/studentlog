@@ -12,7 +12,6 @@ import org.mapstruct.factory.Mappers;
 public interface LeaveApplicationMapper {
     LeaveApplicationMapper INSTANCE = Mappers.getMapper(LeaveApplicationMapper.class);
 
-
     @Mapping(target = "decisionById", source = "decisionBy.id")
     @Mapping(target = "studentId", source = "student.id")
     LeaveApplicationDTO leaveApplicationToLeaveApplicationDto(LeaveApplication leaveApplication);

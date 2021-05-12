@@ -47,8 +47,6 @@ public class LeaveApplicationService {
         leaveApplication.setStudent(getStudent(dto.getStudentId()));
         leaveApplication.setStatus("pending"); //NOTE: is it better here or in the DTO?
 
-        System.out.println("leaveApplication: " + leaveApplication);
-
         //TODO: leaveApplicationToLeaveApplicationDto
         return mapper.leaveApplicationToLeaveApplicationDto(repository.save(leaveApplication));
     }
@@ -57,14 +55,10 @@ public class LeaveApplicationService {
     public LeaveApplicationDTO update(Integer id, LeaveApplicationDTO dto) throws ServiceException {
         LeaveApplication leaveApplication = getLeaveApplication(id);
 
-        System.out.println("BEFORE: " + leaveApplication);
-
         mapper.leaveApplicationDtoToLeaveApplication(dto, leaveApplication);
         //TODO: these fields should not be updated (?)
         leaveApplication.setDecisionBy(getTeacher(dto.getDecisionById()));
         leaveApplication.setStudent(getStudent(dto.getStudentId()));
-
-        System.out.println("AFTER: " + leaveApplication);
 
         return mapper.leaveApplicationToLeaveApplicationDto(repository.save(leaveApplication));
     }
