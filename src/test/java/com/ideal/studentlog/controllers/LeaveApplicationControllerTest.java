@@ -2,6 +2,7 @@ package com.ideal.studentlog.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideal.studentlog.database.repositories.LeaveApplicationRepository;
+import com.ideal.studentlog.helpers.dtos.LeaveApplicationCreateDTO;
 import com.ideal.studentlog.helpers.dtos.LeaveApplicationDTO;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +45,7 @@ public class LeaveApplicationControllerTest {
                 .perform(get("/leave-applications"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].dateFrom", containsString("2021-04-20")))
+                .andExpect(jsonPath("$[0].decisionById", is(1)))
                 .andExpect(jsonPath("$[1].studentId", is(2)))
                 .andExpect(jsonPath("$", hasSize(3)));
     }
@@ -55,8 +56,8 @@ public class LeaveApplicationControllerTest {
                 .perform(get("/leave-applications/2"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.dateTo", containsString("2021-03-01")))
-                .andExpect(jsonPath("$.approvedById", is(5)));
+                .andExpect(jsonPath("$.applicationBody", containsString("With due respect and humble submission")))
+                .andExpect(jsonPath("$.decisionById", is(5)));
     }
 
     @Test
@@ -66,12 +67,12 @@ public class LeaveApplicationControllerTest {
                 .perform(
                         post("/leave-applications")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(getDto()))
+                                .content(mapper.writeValueAsString(getCreateDto()))
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.applicationBody", is("Test Leave Application")))
-                .andExpect(jsonPath("$.approvedById", is(1)));
+                .andExpect(jsonPath("$.supportedDocumentName", is("medical certificate.txt")));
 
         assertEquals(repository.count(), 4);
     }
@@ -79,16 +80,18 @@ public class LeaveApplicationControllerTest {
     @Test
     @Transactional
     public void shouldUpdateLeaveApplication() throws Exception {
+        Integer id = 3;
         mockMvc
                 .perform(
-                        patch("/leave-applications/3")
+                        patch("/leave-applications/"+id)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(getDto()))
+                                .content(mapper.writeValueAsString(getDto(id)))
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.applicationBody", is("Test Leave Application")))
-                .andExpect(jsonPath("$.studentId", is(9)));
+                .andExpect(jsonPath("$.studentId", is(9)))
+                .andExpect(jsonPath("$.decisionById", is(1)));
 
         assertEquals(repository.count(), 3);
     }
@@ -96,11 +99,10 @@ public class LeaveApplicationControllerTest {
     @Test
     @Transactional
     public void shouldDeleteLeaveApplication() throws Exception {
+        Integer id = 3;
         mockMvc
                 .perform(
-                        delete("/leave-applications/3")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(getDto()))
+                        delete("/leave-applications/"+id)
                 )
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -121,13 +123,34 @@ public class LeaveApplicationControllerTest {
 
     @NotNull
     @Contract(" -> new")
-    private LeaveApplicationDTO getDto() {
+    private LeaveApplicationDTO getDto(Integer id) {
         return new LeaveApplicationDTO(
+                id,
                 new Date(),
                 new Date(),
                 9,
                 "Test Leave Application",
+                "",
+                "",
+                "",
+                "",
+                "accepted",
                 1
+        );
+    }
+
+    @NotNull
+    @Contract(" -> new")
+    private LeaveApplicationCreateDTO getCreateDto() {
+        return new LeaveApplicationCreateDTO(
+                new Date(),
+                new Date(),
+                9,
+                "Test Leave Application",
+                "medical certificate.txt",
+                "text/plain",
+                "0 kB",
+                "data:text/plain;base64,VGhpcyBpcyBhIHRlc3QgbWVkaWNhbCBjZXJ0aWZpY2F0ZS4NCg0KU2lnbmVkIEJ5LA0KRHIuIEFCQw=="
         );
     }
 

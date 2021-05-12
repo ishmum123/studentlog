@@ -1,6 +1,7 @@
 package com.ideal.studentlog.controllers;
 
 import com.ideal.studentlog.database.models.LeaveApplication;
+import com.ideal.studentlog.helpers.dtos.LeaveApplicationCreateDTO;
 import com.ideal.studentlog.helpers.dtos.LeaveApplicationDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.LeaveApplicationService;
@@ -30,7 +31,7 @@ public class LeaveApplicationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public LeaveApplicationDTO create(@RequestBody @Valid LeaveApplicationDTO dto) throws ServiceException {
+    public LeaveApplicationDTO create(@RequestBody @Valid LeaveApplicationCreateDTO dto) throws ServiceException {
         return service.create(dto);
     }
 
