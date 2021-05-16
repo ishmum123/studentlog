@@ -29,14 +29,32 @@ databaseChangeLog:
                     constraints:
                       foreignKeyName: fk_leave_application_student_id
                       references: student(id)
+                      nullable: false
                 - column:
                     name: application_body
                     type: varchar(1000)
                     constraints:
                       nullable: false
                 - column:
-                    name: approved_by_id
+                    name: supported_document_name
+                    type: varchar(30)
+                - column:
+                    name: supported_document_type
+                    type: varchar(30)
+                - column:
+                    name: supported_document_size
+                    type: varchar(20)
+                - column:
+                    name: supported_document_base64
+                    type: varchar(4000)
+                - column:
+                    name: status
+                    type: varchar(10)
+                    constraints:
+                      nullable: false
+                - column:
+                    name: decision_by_id
                     type: int
                     constraints:
-                      foreignKeyName: fk_leave_application_approved_by
+                      foreignKeyName: fk_leave_application_decision_by
                       references: teacher(id)

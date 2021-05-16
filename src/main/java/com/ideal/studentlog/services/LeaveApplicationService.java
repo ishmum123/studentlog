@@ -6,6 +6,7 @@ import com.ideal.studentlog.database.models.Teacher;
 import com.ideal.studentlog.database.repositories.LeaveApplicationRepository;
 import com.ideal.studentlog.database.repositories.StudentRepository;
 import com.ideal.studentlog.database.repositories.TeacherRepository;
+import com.ideal.studentlog.helpers.dtos.LeaveApplicationCreateDTO;
 import com.ideal.studentlog.helpers.dtos.LeaveApplicationDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.helpers.mappers.LeaveApplicationMapper;
@@ -39,13 +40,14 @@ public class LeaveApplicationService {
     }
 
     @Transactional
-    public LeaveApplicationDTO create(LeaveApplicationDTO dto) throws ServiceException {
+    public LeaveApplicationDTO create(LeaveApplicationCreateDTO dto) throws ServiceException {
         LeaveApplication leaveApplication = new LeaveApplication();
 
-        mapper.leaveApplicationDtoToLeaveApplication(dto, leaveApplication);
-        leaveApplication.setApprovedBy(getTeacher(dto.getApprovedById()));
+        mapper.leaveApplicationCreateDtoToLeaveApplication(dto, leaveApplication);
         leaveApplication.setStudent(getStudent(dto.getStudentId()));
+        leaveApplication.setStatus("pending"); //NOTE: is it better here or in the DTO?
 
+        //TODO: leaveApplicationToLeaveApplicationDto
         return mapper.leaveApplicationToLeaveApplicationDto(repository.save(leaveApplication));
     }
 
@@ -54,7 +56,8 @@ public class LeaveApplicationService {
         LeaveApplication leaveApplication = getLeaveApplication(id);
 
         mapper.leaveApplicationDtoToLeaveApplication(dto, leaveApplication);
-        leaveApplication.setApprovedBy(getTeacher(dto.getApprovedById()));
+        //TODO: these fields should not be updated (?)
+        leaveApplication.setDecisionBy(getTeacher(dto.getDecisionById()));
         leaveApplication.setStudent(getStudent(dto.getStudentId()));
 
         return mapper.leaveApplicationToLeaveApplicationDto(repository.save(leaveApplication));

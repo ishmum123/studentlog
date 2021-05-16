@@ -1,6 +1,5 @@
 package com.ideal.studentlog.database.models;
 
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -30,7 +29,17 @@ public class LeaveApplication {
     @NonNull
     String applicationBody;
 
+    String supportedDocumentName;
+
+    String supportedDocumentType;
+
+    String supportedDocumentSize;
+
+    String supportedDocumentBase64;
+
     @NonNull
+    String status;
+
     @ManyToOne
-    Teacher approvedBy;
+    Teacher decisionBy;
 }
